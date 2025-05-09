@@ -1,40 +1,30 @@
-const itemsContainer = document.querySelector('.items');
-    const cubes = document.querySelectorAll('.item');
 
-    cubes.forEach(cube => {
-      let isDragging = false;
-      let offsetX, offsetY;
+  const slider = document.querySelector('.items');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
 
-      cube.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        cube.style.zIndex = 1000;
-        const rect = cube.getBoundingClientRect();
-        const containerRect = itemsContainer.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
 
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
 
-        function onMouseMove(e) {
-          if (!isDragging) return;
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
 
-          const x = e.clientX - containerRect.left - offsetX;
-          const y = e.clientY - containerRect.top - offsetY;
-
-          // Constrain within the container
-          const maxX = itemsContainer.clientWidth - cube.offsetWidth;
-          const maxY = itemsContainer.clientHeight - cube.offsetHeight;
-
-          cube.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
-          cube.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
-        }
-
-        function onMouseUp() {
-          isDragging = false;
-          cube.style.zIndex = 1;
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-        }
-      });
-    });
+  slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast
+    slider.scrollLeft = scrollLeft - walk;
+  });
