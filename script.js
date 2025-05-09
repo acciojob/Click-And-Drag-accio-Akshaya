@@ -1,31 +1,32 @@
+
   const slider = document.querySelector('.items');
   let isDown = false;
   let startX;
   let scrollLeft;
 
-  slider.addEventListener('mousedown', (e) => {
+  // Use pointer events instead of mouse events
+  slider.addEventListener('pointerdown', (e) => {
     isDown = true;
     slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
+    startX = e.pageX;
     scrollLeft = slider.scrollLeft;
   });
 
-  slider.addEventListener('mouseleave', () => {
+  slider.addEventListener('pointerleave', () => {
     isDown = false;
     slider.classList.remove('active');
   });
 
-  slider.addEventListener('mouseup', () => {
+  slider.addEventListener('pointerup', () => {
     isDown = false;
     slider.classList.remove('active');
   });
 
-  slider.addEventListener('mousemove', (e) => {
+  slider.addEventListener('pointermove', (e) => {
     if (!isDown) return;
     e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust scroll speed
+    const x = e.pageX;
+    const walk = (x - startX) * 2;
     slider.scrollLeft = scrollLeft - walk;
   });
-
 
