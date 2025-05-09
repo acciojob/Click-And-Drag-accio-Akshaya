@@ -4,27 +4,27 @@
   let startX;
   let scrollLeft;
 
-  slider.addEventListener('mousedown', (e) => {
+  slider.addEventListener('mousedown', function (e) {
     isDown = true;
     slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
+    startX = e.clientX;
     scrollLeft = slider.scrollLeft;
   });
 
-  slider.addEventListener('mouseleave', () => {
+  slider.addEventListener('mouseleave', function () {
     isDown = false;
     slider.classList.remove('active');
   });
 
-  slider.addEventListener('mouseup', () => {
+  slider.addEventListener('mouseup', function () {
     isDown = false;
     slider.classList.remove('active');
   });
 
-  slider.addEventListener('mousemove', (e) => {
+  slider.addEventListener('mousemove', function (e) {
     if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; // scroll-fast
+    const x = e.clientX;
+    const walk = (x - startX) * 2; // speed factor
     slider.scrollLeft = scrollLeft - walk;
   });
+
