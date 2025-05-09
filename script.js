@@ -1,30 +1,30 @@
-
   const slider = document.querySelector('.items');
   let isDown = false;
   let startX;
   let scrollLeft;
 
-  slider.addEventListener('mousedown', function (e) {
+  slider.addEventListener('mousedown', (e) => {
     isDown = true;
     slider.classList.add('active');
-    startX = e.clientX;
+    startX = e.pageX - slider.offsetLeft;
     scrollLeft = slider.scrollLeft;
   });
 
-  slider.addEventListener('mouseleave', function () {
+  slider.addEventListener('mouseleave', () => {
     isDown = false;
     slider.classList.remove('active');
   });
 
-  slider.addEventListener('mouseup', function () {
+  slider.addEventListener('mouseup', () => {
     isDown = false;
     slider.classList.remove('active');
   });
 
-  slider.addEventListener('mousemove', function (e) {
+  slider.addEventListener('mousemove', (e) => {
     if (!isDown) return;
-    const x = e.clientX;
-    const walk = (x - startX) * 2; // speed factor
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast
     slider.scrollLeft = scrollLeft - walk;
   });
 
