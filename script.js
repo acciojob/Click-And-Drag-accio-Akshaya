@@ -1,32 +1,29 @@
+const slider = document.querySelector('.items');
+let isDown = false;
+let startX;
+let scrollLeft;
 
-  const slider = document.querySelector('.items');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
-
-  // Use pointer events instead of mouse events
-  slider.addEventListener('pointerdown', (e) => {
+slider.addEventListener('mousedown', (e) => {
     isDown = true;
     slider.classList.add('active');
-    startX = e.pageX;
+    startX = e.pageX - slider.offsetLeft;
     scrollLeft = slider.scrollLeft;
-  });
+});
 
-  slider.addEventListener('pointerleave', () => {
+slider.addEventListener('mouseleave', () => {
     isDown = false;
     slider.classList.remove('active');
-  });
+});
 
-  slider.addEventListener('pointerup', () => {
+slider.addEventListener('mouseup', () => {
     isDown = false;
     slider.classList.remove('active');
-  });
+})
 
-  slider.addEventListener('pointermove', (e) => {
-    if (!isDown) return;
+slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return; // stops the function from running
     e.preventDefault();
-    const x = e.pageX;
-    const walk = (x - startX) * 2;
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 3;
     slider.scrollLeft = scrollLeft - walk;
-  });
-
+})
